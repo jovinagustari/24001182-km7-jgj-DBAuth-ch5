@@ -5,5 +5,5 @@ email : janedoe.admin@gmail.com
 password : itsjanedoe
 
 User Role
-email : johndoe.admin@gmail.com
+email : johndoe@gmail.com
 password : itsjohndoe
