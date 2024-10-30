@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model car_models {
+  id           BigInt    @id @default(autoincrement())
+  model_name   String    @db.VarChar(255)
+  manufacturer String    @db.VarChar(255)
+  transmission String    @db.VarChar(255)
+  description  String?
+  car_type_id  BigInt
+  specs        Json?     @db.Json
+  options      Json?     @db.Json
+  car_types    car_types @relation(fields: [car_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_car_types")
+  cars         cars[]
+}
+
+model car_types {
+  id         BigInt       @id @default(autoincrement())
+  body_style String       @db.VarChar(255)
+  capacity   Int
+  fuel_type  String       @db.VarChar(255)
+  car_models car_models[]
+}
+
+model cars {
+  id           BigInt     @id @default(autoincrement())
+  plate        String     @db.VarChar(255)
+  image        String?    @db.VarChar(255)
+  rentPerDay   Int
+  availableAt  DateTime   @db.Timestamptz(6)
+  available    Boolean
+  year         Int
+  car_model_id BigInt
+  car_models   car_models @relation(fields: [car_model_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_car_models")
+}
+
+model users {
+  id              BigInt  @id @default(autoincrement())
+  name            String  @db.VarChar
+  email           String  @unique @db.VarChar
+  password        String  @db.VarChar
+  profile_picture String? @db.VarChar
+  role_id         Int?    @default(2)
+}
